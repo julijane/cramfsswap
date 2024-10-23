@@ -4,7 +4,7 @@ all: cramfsswap strip
 debian: cramfsswap
 
 cramfsswap: cramfsswap.c
-	gcc -Wall -g -O -o cramfsswap -lz cramfsswap.c
+	gcc -std=c89 -Wall -g -O -o cramfsswap -lz cramfsswap.c
 
 strip:
 	strip cramfsswap

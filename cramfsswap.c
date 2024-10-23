@@ -11,8 +11,7 @@
 #include <stdio.h>
 #include <inttypes.h>
 #include <sys/stat.h>
-#include <linux/cramfs_fs.h>
-#include <byteswap.h>
+#include "linux/cramfs_fs.h"
 #include <zlib.h> /* for crc32 */
 #include <sys/mman.h>
 #include <fcntl.h>
@@ -23,6 +22,17 @@
 #define MAXFILES	4096
 #define BLKSIZE		4096	/* Should this be a command line option? */
 
+#define bswap_16(value) \
+((((value) & 0xff) << 8) | ((value) >> 8))
+
+#define bswap_32(value) \
+(((uint32_t)bswap_16((uint16_t)((value) & 0xffff)) << 16) | \
+(uint32_t)bswap_16((uint16_t)((value) >> 16)))
+
+#define bswap_64(value) \
+(((uint64_t)bswap_32((uint32_t)((value) & 0xffffffff)) \
+<< 32) | \
+(uint64_t)bswap_32((uint32_t)((value) >> 32)))
 
 int main(int argc, char *argv[])
 {
